@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bottle Flipping Game</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            flex-direction: column;
+            position: relative;
+        }
+        .bottle {
+            width: 50px;
+            height: 100px;
+            background: blue;
+            position: absolute;
+            bottom: 50px;
+            transition: transform 1s ease-out;
+        }
+        .slider-container {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        .coin-counter {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 18px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="coin-counter" id="coinCounter">Coins: 0</div>
+    <div class="bottle" id="bottle"></div>
+    <button onclick="flipBottle()">Flip</button>
+    <div class="slider-container">
+        <input type="range" id="waterLevel" min="10" max="100" value="50">
+        <p>Water Level: <span id="waterValue">50</span>%</p>
+    </div>
+    <script>
+        let coins = 0;
+
+        document.getElementById("waterLevel").addEventListener("input", function() {
+            document.getElementById("waterValue").textContent = this.value;
+        });
+
+        function flipBottle() {
+            let bottle = document.getElementById("bottle");
+            let waterLevel = document.getElementById("waterLevel").value;
+            let angle = Math.random() * 720 + 360;
+            let height = (100 - waterLevel) * 1.5;
+            
+            bottle.style.transform = `rotate(${angle}deg) translateY(-${height}px)`;
+            
+            setTimeout(() => {
+                bottle.style.transform = "rotate(0deg) translateY(0)";
+                if (Math.random() > 0.5) {
+                    coins += Math.floor(waterLevel / 10);
+                    document.getElementById("coinCounter").textContent = `Coins: ${coins}`;
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
